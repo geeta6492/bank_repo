@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Information</title>
+</head>
+<body>
+
+    {{msg}}
+
+    <form action="http://localhost:5000/customer/persist/" method="post">
+        Customer Id : <input type="text" name="cid" value="{{cust.cid}}"> <br><br>
+        Customer Name : <input type="text" name="cnm" value="{{cust.cnm}}"> <br><br>
+        Customer Age : <input type="text" name="cag" value="{{cust.cag}}"> <br><br>
+        Customer Email : <input type="text" name="ceml" value="{{cust.ceml}}"> <br><br>
+        Customer Gender :
+            {% for key,value in genders.items() %}
+                {% if key==cust.gender%}
+                <input type="radio" value="{{key}}" name="gender" checked> {{value}}
+                {% else %}
+                    <input type="radio" value="{{key}}" name="gender"> {{value}}
+                {% endif %}
+            {% endfor %} <br><br>
+
+        Customer Address :
+        <select name="adr">
+            <option value="0">--SELECT--</option>
+            {% for adr in addresses %}
+            {% if cust.adr == adr.id %}
+                <option value="{{adr.id}}" selected>{{adr.city}}</option>
+            {% else %}
+                <option value="{{adr.id}}">{{adr.city}}</option>
+            {% endif %}
+            {% endfor%}
+        </select>
+        <br><br>
+        <input type="submit">
+    </form>
+
+    <table border="1">
+            <thead>
+            <th>CUSTID</th>
+            <th>CUSTName</th>
+            <th>CUSTAge</th>
+            <th>CUSTEmail</th>
+            <th>CUSTCity</th>
+            <th>Balance</th>
+            </thead>
+        {% for cust in custs %}
+            <tbody>
+            <td>{{cust.id}}</td>
+            <td>{{cust.name}}</td>
+            <td>{{cust.age}}</td>
+            <td>{{cust.email}}</td>
+            <td>{{cust.address.city}}</td>
+            <td>
+                {% for custacc in cust.accounts %}
+                    {{custacc.id}} -> {{custacc.balance}}<br>
+                {% endfor %}
+
+            </td>
+
+            </tbody>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
